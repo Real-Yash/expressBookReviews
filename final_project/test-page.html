@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express Book Reviews - API Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .test-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        .get-btn {
+            background-color: #4CAF50;
+        }
+        .get-btn:hover {
+            background-color: #45a049;
+        }
+        .post-btn {
+            background-color: #2196F3;
+        }
+        .post-btn:hover {
+            background-color: #1976D2;
+        }
+        .async-btn {
+            background-color: #FF9800;
+        }
+        .async-btn:hover {
+            background-color: #F57C00;
+        }
+        .auth-btn {
+            background-color: #9C27B0;
+        }
+        .auth-btn:hover {
+            background-color: #7B1FA2;
+        }
+        .response-area {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        #response {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        .auth-form {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: inline-block;
+            width: 80px;
+            font-weight: bold;
+        }
+        .form-group input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+        .note {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Express Book Reviews - API Test Dashboard</h1>
+        
+        <!-- Public Routes Section -->
+        <div class="section">
+            <h3>📚 Public Routes (Tasks 1-5)</h3>
+            <div class="button-grid">
+                <button class="test-btn get-btn" onclick="testEndpoint('GET', '/')">
+                    Task 1: Get All Books
+                </button>
+                <button class="test-btn get-btn" onclick="testEndpoint('GET', '/isbn/1')">
+                    Task 2: Get Book by ISBN
+                </button>
+                <button class="test-btn get-btn" onclick="testEndpoint('GET', '/author/Chinua Achebe')">
+                    Task 3: Get Books by Author
+                </button>
+                <button class="test-btn get-btn" onclick="testEndpoint('GET', '/title/Things Fall Apart')">
+                    Task 4: Get Books by Title
+                </button>
+                <button class="test-btn get-btn" onclick="testEndpoint('GET', '/review/1')">
+                    Task 5: Get Book Reviews
+                </button>
+            </div>
+        </div>
+
+        <!-- Registration Section -->
+        <div class="section">
+            <h3>👤 User Registration (Task 6)</h3>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="regUsername" value="testuser" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="regPassword" value="testpass" placeholder="Enter password">
+                </div>
+                <button class="test-btn post-btn" onclick="registerUser()">
+                    Task 6: Register User
+                </button>
+            </div>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="section">
+            <h3>🔐 Authentication & Reviews (Tasks 7-9)</h3>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="loginUsername" value="testuser" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="loginPassword" value="testpass" placeholder="Enter password">
+                </div>
+                <button class="test-btn auth-btn" onclick="loginUser()">
+                    Task 7: Login User
+                </button>
+            </div>
+            <div class="button-grid" style="margin-top: 15px;">
+                <button class="test-btn auth-btn" onclick="addReview()">
+                    Task 8: Add Review
+                </button>
+                <button class="test-btn auth-btn" onclick="deleteReview()">
+                    Task 9: Delete Review
+                </button>
+            </div>
+            <div class="warning">
+                <strong>⚠️ Note:</strong> You must login first (Task 7) before testing Tasks 8 & 9!
+            </div>
+        </div>
+
+        <!-- Async Routes Section -->
+        <div class="section">
+            <h3>⚡ Async/Await Routes (Tasks 10-13)</h3>
+            <div class="button-grid">
+                <button class="test-btn async-btn" onclick="testEndpoint('GET', '/async')">
+                    Task 10: Async Get All Books
+                </button>
+                <button class="test-btn async-btn" onclick="testEndpoint('GET', '/async/isbn/1')">
+                    Task 11: Async Get by ISBN
+                </button>
+                <button class="test-btn async-btn" onclick="testEndpoint('GET', '/async/author/Chinua Achebe')">
+                    Task 12: Async Get by Author
+                </button>
+                <button class="test-btn async-btn" onclick="testEndpoint('GET', '/async/title/Things Fall Apart')">
+                    Task 13: Async Get by Title
+                </button>
+            </div>
+        </div>
+
+        <!-- Response Area -->
+        <div class="response-area">
+            <h3>📋 API Response</h3>
+            <div class="note">
+                <strong>💡 Tip:</strong> Click any button above to test the API endpoint. The response will appear below.
+            </div>
+            <div id="response">Ready to test! Click any button above to see the API response here...</div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:5000';
+        let sessionCookie = '';
+
+        function updateResponse(content) {
+            document.getElementById('response').textContent = content;
+        }
+
+        async function testEndpoint(method, endpoint) {
+            try {
+                updateResponse(`Testing ${method} ${endpoint}...\n`);
+                
+                const response = await fetch(BASE_URL + endpoint, {
+                    method: method,
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let formattedResponse;
+                
+                try {
+                    const jsonData = JSON.parse(responseText);
+                    formattedResponse = JSON.stringify(jsonData, null, 2);
+                } catch {
+                    formattedResponse = responseText;
+                }
+
+                updateResponse(`✅ ${method} ${endpoint}\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n${formattedResponse}`);
+            } catch (error) {
+                updateResponse(`❌ Error testing ${method} ${endpoint}:\n${error.message}`);
+            }
+        }
+
+        async function registerUser() {
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            
+            if (!username || !password) {
+                updateResponse('❌ Please enter both username and password for registration!');
+                return;
+            }
+
+            try {
+                updateResponse('Registering user...\n');
+                
+                const response = await fetch(BASE_URL + '/register', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const responseData = await response.json();
+                updateResponse(`✅ POST /register\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n${JSON.stringify(responseData, null, 2)}`);
+            } catch (error) {
+                updateResponse(`❌ Registration error:\n${error.message}`);
+            }
+        }
+
+        async function loginUser() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                updateResponse('❌ Please enter both username and password for login!');
+                return;
+            }
+
+            try {
+                updateResponse('Logging in user...\n');
+                
+                const response = await fetch(BASE_URL + '/customer/login', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const responseText = await response.text();
+                updateResponse(`✅ POST /customer/login\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n${responseText}\n\n🎉 You are now logged in! You can test Tasks 8 & 9.`);
+            } catch (error) {
+                updateResponse(`❌ Login error:\n${error.message}`);
+            }
+        }
+
+        async function addReview() {
+            try {
+                updateResponse('Adding review...\n');
+                
+                const response = await fetch(BASE_URL + '/customer/auth/review/1?review=This is a great book!', {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const responseData = await response.json();
+                updateResponse(`✅ PUT /customer/auth/review/1\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n${JSON.stringify(responseData, null, 2)}`);
+            } catch (error) {
+                updateResponse(`❌ Add review error:\n${error.message}\n\n⚠️ Make sure you're logged in first!`);
+            }
+        }
+
+        async function deleteReview() {
+            try {
+                updateResponse('Deleting review...\n');
+                
+                const response = await fetch(BASE_URL + '/customer/auth/review/1', {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const responseData = await response.json();
+                updateResponse(`✅ DELETE /customer/auth/review/1\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n${JSON.stringify(responseData, null, 2)}`);
+            } catch (error) {
+                updateResponse(`❌ Delete review error:\n${error.message}\n\n⚠️ Make sure you're logged in first!`);
+            }
+        }
+
+        // Auto-scroll response area when content changes
+        const observer = new MutationObserver(() => {
+            const responseDiv = document.getElementById('response');
+            responseDiv.scrollTop = responseDiv.scrollHeight;
+        });
+        observer.observe(document.getElementById('response'), { childList: true, subtree: true });
+    </script>
+</body>
+</html>
